@@ -38,7 +38,7 @@ namespace HoloUWP
                     if (choice != 0)
                     {
                         startButtonPressed = choice;
-                        Log.Info("Start Exploring button pressed - Implement further actions here");
+                        Log.Info("Start Exploring button prssed - Implement further actions here");
                         showUI = false;
                     }
                 }
@@ -50,19 +50,49 @@ namespace HoloUWP
                     switch (startButtonPressed)
                     {
                         case 1:
-                            // Draw the heart model
-                            active = models.Heart;
-                            active.Draw(poses.heartPose, poses.heartScale);
+                            // Draw the circulatory system
+                            active = models.circulatorySystem;
+                            active.Draw(poses.SystemPose, poses.SystemScale);
                             break;
                         case 2:
-                            // Draw the respiratory system
-                            active = models.RespiratorySystem;
-                            active.Draw(poses.respiratoryPose, poses.respiratorySystemScale);
+                            // Draw the digestive system
+                            active = models.digestiveSystem;
+                            active.Draw(poses.SystemPose, poses.SystemScale);
                             break;
                         case 3:
-                            // Draw the fox model
-                            active = models.Fox;
-                            active.Draw(poses.foxPose, poses.foxScale);
+                            // Draw the endocrine system
+                            active = models.endocrineSystem;
+                            active.Draw(poses.SystemPose, poses.SystemScale);
+                            break;
+                        case 4:
+                            // Draw the lymphatic system
+                            active = models.lymphaticSystem;
+                            active.Draw(poses.SystemPose, poses.SystemScale);
+                            break;
+                        case 5:
+                            // Draw the muscular system
+                            active = models.muscularSystem;
+                            active.Draw(poses.SystemPose, poses.SystemScale);
+                            break;
+                        case 6:
+                            // Draw the nervous system
+                            active = models.nervousSystem;
+                            active.Draw(poses.SystemPose, poses.SystemScale);
+                            break;
+                        case 7:
+                            // Draw the respiratory system
+                            active = models.respiratorySystem;
+                            active.Draw(poses.SystemPose, poses.SystemScale);
+                            break;
+                        case 8:
+                            // Draw the skeletal system
+                            active = models.skeletalSystem;
+                            active.Draw(poses.SystemPose, poses.SystemScale);
+                            break;
+                        case 9:
+                            // Draw the urinary system
+                            active = models.urinarySystem;
+                            active.Draw(poses.SystemPose, poses.SystemScale);
                             break;
                         default:
                             Log.Warn("Unknown button pressed state");

@@ -87,11 +87,6 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\gltfpack.exe" />
-    <Content Include="Assets\Logo\Logo-150.png" />
-    <Content Include="Assets\Logo\Logo-16.png" />
-    <Content Include="Assets\Logo\Logo-310.png" />
-    <Content Include="Assets\Logo\Logo-44.png" />
     <Content Include="Assets\Logo\Logo-50.png" />
     <Content Include="Assets\Logo\Logo-71.png" />
     <Content Include="Assets\Logo\Logo-Wide150.png" />
@@ -111,11 +106,18 @@
   <ItemGroup>
     <Compile Include="Properties\IsExternalInit.cs" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
+    <None Include="Assets\circulatorySystem.glb" />
+    <None Include="Assets\digestiveSystem.opt.glb" />
+    <None Include="Assets\endocrineSystem.opt.glb" />
     <None Include="Assets\Fox.glb" />
     <None Include="Assets\Heart.opt.glb" />
-    <None Include="Assets\Respitory.glb" />
+    <None Include="Assets\lymphaticSystem.opt.glb" />
+    <None Include="Assets\muscularSystem.opt.glb" />
+    <None Include="Assets\nervousSystem.opt.glb" />
+    <None Include="Assets\respiratorySystem.glb" />
+    <None Include="Assets\skeletalSystem.opt.glb" />
+    <None Include="Assets\urinarySystem.opt.glb" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '16.0' ">
     <VisualStudioVersion>16.0</VisualStudioVersion>

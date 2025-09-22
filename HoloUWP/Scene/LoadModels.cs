@@ -8,19 +8,30 @@ namespace Scene
         public static Models LoadAll()
         {
             Log.Info("Loading Models");
-            //var helmet = Model.FromFile("DamagedHelmet.opt.glb");
-            //var game = Model.FromFile("ABeautifulGame.opt.glb");
-            //var sphere = Model.FromFile("AnimatedMorphSphere.glb");
-            var fox = Model.FromFile("Fox.glb");
-            var resSystem = Model.FromFile("Respitory.glb");
-            var heart = Model.FromFile("Heart.opt.glb");
 
-            // Try to play the first animation on respiratory (if any)
-            //TryPlayFirstAnimation(resSystem, AnimMode.Loop);
-            //TryPlayFirstAnimation(heart, AnimMode.Loop);
-            //TryPlayFirstAnimation(fox, AnimMode.Loop);
+            var circulatorySystem = Model.FromFile("circulatorySystem.glb");
+            var digestiveSystem = Model.FromFile("digestiveSystem.opt.glb");
+            var endocrineSystem = Model.FromFile("endocrineSystem.opt.glb");
+            var lymphaticSystem = Model.FromFile("lymphaticSystem.opt.glb");
+            var muscularSystem = Model.FromFile("muscularSystem.opt.glb");
+            var nervousSystem = Model.FromFile("nervousSystem.opt.glb");
+            var respiratorySystem = Model.FromFile("respiratorySystem.glb");
+            var skeletalSystem = Model.FromFile("skeletalSystem.opt.glb");
+            var urinarySystem = Model.FromFile("urinarySystem.opt.glb");
 
-            return new Models(resSystem, heart, fox);
+
+            // Try to play the animations if they exist
+            /*TryPlayFirstAnimation(circulatorySystem, AnimMode.Loop);
+            TryPlayFirstAnimation(digestiveSystem, AnimMode.Loop);
+            TryPlayFirstAnimation(endocrineSystem, AnimMode.Loop);
+            TryPlayFirstAnimation(lymphaticSystem, AnimMode.Loop);
+            TryPlayFirstAnimation(muscularSystem, AnimMode.Loop);
+            TryPlayFirstAnimation(nervousSystem, AnimMode.Loop);
+            TryPlayFirstAnimation(respiratorySystem, AnimMode.Loop);
+            TryPlayFirstAnimation(skeletalSystem, AnimMode.Loop);
+            TryPlayFirstAnimation(urinarySystem, AnimMode.Loop); */
+
+            return new Models(circulatorySystem, digestiveSystem, endocrineSystem, lymphaticSystem, muscularSystem, nervousSystem, respiratorySystem, skeletalSystem, urinarySystem);
         }
 
 
@@ -43,7 +54,7 @@ namespace Scene
         }
     }
 
-     public record Models(Model RespiratorySystem, Model Heart, Model Fox);
+     public record Models(Model circulatorySystem, Model digestiveSystem, Model endocrineSystem, Model lymphaticSystem, Model muscularSystem, Model nervousSystem, Model respiratorySystem, Model skeletalSystem, Model urinarySystem);
 }
     
 

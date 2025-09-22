@@ -11,25 +11,67 @@ namespace Scene
             UI.Label("Welcome to the Mixed Reality Experience!");
             UI.Label("Choose a system to explore:");
 
-            if (UI.Button("Heart"))
+            if (UI.Button("Circulatory System"))
             {
-                Log.Info("Heart button pressed");
+                Log.Info("Circulatory System button pressed");
                 UI.WindowEnd();
-                return 1; // Code for heart
+                return 1;
+            }
+
+            if (UI.Button("Digestive System"))
+            {
+                Log.Info("Digestive System button pressed");
+                UI.WindowEnd();
+                return 2;
+            }
+
+            if (UI.Button("Endocrine System"))
+            {
+                Log.Info("Endocrine System button pressed");
+                UI.WindowEnd();
+                return 3;
+            }
+
+            if (UI.Button("Lymphatic System"))
+            {
+                Log.Info("Lymphatic System button pressed");
+                UI.WindowEnd();
+                return 4; 
+            }
+
+            if (UI.Button("Muscular System"))
+            {
+                Log.Info("Muscular System button pressed");
+                UI.WindowEnd();
+                return 5;
+            }
+
+            if (UI.Button("Nervous System"))
+            {
+                Log.Info("Nervous System button pressed");
+                UI.WindowEnd();
+                return 6;
             }
 
             if (UI.Button("Respiratory System"))
             {
                 Log.Info("Respiratory System button pressed");
                 UI.WindowEnd();
-                return 2; // Code for respiratory system
+                return 7;
             }
 
-            if (UI.Button("Fox Model"))
+            if (UI.Button("Skeletal System"))
             {
-                Log.Info("Fox Model button pressed");
+                Log.Info("Skeletal System button pressed");
                 UI.WindowEnd();
-                return 3; // Code for fox model
+                return 8;
+            }
+
+            if (UI.Button("Urinary System"))
+            {
+                Log.Info("Urinary System button pressed");
+                UI.WindowEnd();
+                return 9;
             }
 
             UI.WindowEnd();
