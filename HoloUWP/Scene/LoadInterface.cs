@@ -1,0 +1,106 @@
+﻿using StereoKit;
+
+namespace Scene
+{
+    public static class LoadInterfaces
+    {
+        public static int DrawStartInterface(Pose windowPose)
+        {
+            UI.WindowBegin("Main Window", ref windowPose);
+
+            UI.Label("Welcome to the Mixed Reality Experience!");
+            UI.Label("Choose a system to explore:");
+
+            if (UI.Button("Heart"))
+            {
+                Log.Info("Heart button pressed");
+                UI.WindowEnd();
+                return 1; // Code for heart
+            }
+
+            if (UI.Button("Respiratory System"))
+            {
+                Log.Info("Respiratory System button pressed");
+                UI.WindowEnd();
+                return 2; // Code for respiratory system
+            }
+
+            if (UI.Button("Fox Model"))
+            {
+                Log.Info("Fox Model button pressed");
+                UI.WindowEnd();
+                return 3; // Code for fox model
+            }
+
+            UI.WindowEnd();
+            return 0; // Indicate that the button was not pressed
+        }
+
+        public static bool ModelInterface(Pose windowPose, Model model, ref int selectedAnim, ref bool loopAnim)
+        {
+            UI.WindowBegin("Model Controls", ref windowPose);
+
+            //UI.Label("This is the Model Interface");
+            //UI.Label("Use the menu to Go Back.");
+
+            if (UI.Button("◀  Back"))
+            {
+                Log.Info("Go Back button pressed");
+                UI.WindowEnd();
+                return true; // Indicate that the button was pressed
+            }
+
+            UI.HSeparator();
+            UI.Label($"Animations ({model.Anims.Count}):");
+
+            // Guard if the model has no animations
+            if (model.Anims.Count == 0)
+            {
+                UI.Label("No animations found for this model.");
+                UI.WindowEnd();
+                return false;
+            }
+
+            // Clamp selection just in case
+            if (selectedAnim < 0 || selectedAnim >= model.Anims.Count)
+            {
+                selectedAnim = 0;
+            }
+
+            // Radio list of all animations (one selectable)
+            for (int i = 0; i < model.Anims.Count; i++)
+            {
+                bool isActive = (selectedAnim == i);
+                // StereoKit radio pattern: UI.Radio("label", ref int value, int id)
+                if (UI.Radio(model.Anims[i].Name, isActive))
+                {
+                    selectedAnim = i;
+                    model.PlayAnim(model.Anims[i].Name, loopAnim ? AnimMode.Loop : AnimMode.Once);
+
+                }
+            }
+
+            UI.HSeparator();
+
+            if (UI.Toggle("Loop", ref loopAnim))
+            {
+                // If an animation is already selected, restart it with the new loop setting
+                if (selectedAnim >= 0 && selectedAnim < model.Anims.Count)
+                {
+                    string name = model.Anims[selectedAnim].Name;
+                    model.PlayAnim(name, loopAnim ? AnimMode.Loop : AnimMode.Once);
+                }
+            }
+
+            if (UI.Button("▶  Play Selected"))
+            {
+                string name = model.Anims[selectedAnim].Name;
+                model.PlayAnim(name, loopAnim ? AnimMode.Loop : AnimMode.Once);
+            }
+
+
+            UI.WindowEnd();
+            return false; // Indicate that the button was not pressed
+        }
+    }
+}
