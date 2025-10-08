@@ -38,14 +38,13 @@ namespace HoloUWP
                 
                 if (showUI)
                 {
-                    var startPose = poses.startingWinPose;
-                    int choice = LoadInterfaces.DrawStartInterface(ref startPose);
-                    poses.startingWinPose = startPose;
+                    var startPose = poses.startingWinPose;                              // copy to local
+                    int choice = LoadInterfaces.DrawStartInterface(ref startPose);      // pass local by ref
+                    poses.startingWinPose = startPose;                                  // write back
 
                     if (choice != 0)
                     {
                         startButtonPressed = choice;
-                        Log.Info("Start Exploring button prssed - Implement further actions here");
                         showUI = false;
                     }
                 }
@@ -102,7 +101,7 @@ namespace HoloUWP
                         var modelWinPose = poses.modelWinPose;   // local copy so we can pass by ref
                         float scale = poses.systemScale;         // local copy so we can pass by ref
 
-                        bool goBack = LoadInterfaces.ModelInterface(ref modelWinPose, active, ref selectedAnim, ref loopAnim, ref scale);
+                        bool goBack = LoadInterfaces.ModelInterface(ref modelWinPose, active, ref selectedAnim, ref loopAnim/*, ref scale*/);
 
                         poses.modelWinPose = modelWinPose;       // write back the updated window pose
                         poses.systemScale = scale;              // write back the updated scale
@@ -115,11 +114,11 @@ namespace HoloUWP
                             Log.Info("Model interface button pressed - Implement further actions here");
                         }
 
-                        Bounds humanBounds = new Bounds(Vec3.Zero, new Vec3(0.6f, 1.8f, 0.6f));
-                        var systemPose = poses.systemPose;   // local copy so we can pass by ref
-                        UI.HandleBegin("system-handle", ref systemPose, humanBounds);
-                        UI.HandleEnd();
-                        poses.systemPose = systemPose;       // write back the updated window pose
+                        //Bounds humanBounds = new Bounds(Vec3.Zero, new Vec3(0.6f, 1.8f, 0.6f));
+                        //var systemPose = poses.systemPose;   // local copy so we can pass by ref
+                        //UI.HandleBegin("system-handle", ref systemPose, humanBounds);
+                        //UI.HandleEnd();
+                        //poses.systemPose = systemPose;       // write back the updated window pose
 
                         // Draw the big model with the current scale
                         active.Draw(poses.systemPose, poses.systemScale);
