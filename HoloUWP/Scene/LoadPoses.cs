@@ -16,12 +16,25 @@ namespace Scene
 
             //Models
             // Systems
-            var SystemPose = new Pose(0, -1.5f, -1f, Quat.LookDir(-Vec3.Forward));
-            float SystemScale = 1.0f;
+            var systemPose = new Pose(0, -1.5f, -1f, Quat.LookDir(-Vec3.Forward));
+            float systemScale = 1.0f;
 
-            return new ScenePoses(startingWinPose, modelWinPose, SystemPose, SystemScale);
+            return new ScenePoses
+            {
+                startingWinPose = startingWinPose,
+                modelWinPose = modelWinPose,
+                systemPose = systemPose,
+                systemScale = systemScale,
+            };
         }
     }
 
-    public record ScenePoses(Pose startingWinPose, Pose modelWinPose, Pose SystemPose, float SystemScale);
+    // Mutable container 
+    public class ScenePoses
+    {
+        public Pose startingWinPose { get; set; }
+        public Pose modelWinPose { get; set; }
+        public Pose systemPose { get; set; }
+        public float systemScale { get; set; }
+    }
 }

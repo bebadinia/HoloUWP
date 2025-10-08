@@ -4,8 +4,12 @@ namespace Scene
 {
     public static class LoadInterfaces
     {
-        public static int DrawStartInterface(Pose windowPose)
+        public static int DrawStartInterface(ref Pose windowPose)
         {
+            // Make the whole panel movable
+            //Bounds panelBounds = new Bounds(Vec3.Zero, new Vec3(0.45f, 0.35f, 0.02f));
+            //UI.HandleBegin("main-window-handle", ref windowPose, panelBounds);
+
             UI.WindowBegin("Main Window", ref windowPose);
 
             UI.Label("Welcome to the Mixed Reality Experience!");
@@ -14,72 +18,77 @@ namespace Scene
             if (UI.Button("Circulatory System"))
             {
                 Log.Info("Circulatory System button pressed");
-                UI.WindowEnd();
+                //UI.WindowEnd();
                 return 1;
             }
 
             if (UI.Button("Digestive System"))
             {
                 Log.Info("Digestive System button pressed");
-                UI.WindowEnd();
+                //UI.WindowEnd();
                 return 2;
             }
 
             if (UI.Button("Endocrine System"))
             {
                 Log.Info("Endocrine System button pressed");
-                UI.WindowEnd();
+                //UI.WindowEnd();
                 return 3;
             }
 
             if (UI.Button("Lymphatic System"))
             {
                 Log.Info("Lymphatic System button pressed");
-                UI.WindowEnd();
+                //UI.WindowEnd();
                 return 4; 
             }
 
             if (UI.Button("Muscular System"))
             {
                 Log.Info("Muscular System button pressed");
-                UI.WindowEnd();
+                //UI.WindowEnd();
                 return 5;
             }
 
             if (UI.Button("Nervous System"))
             {
                 Log.Info("Nervous System button pressed");
-                UI.WindowEnd();
+                //UI.WindowEnd();
                 return 6;
             }
 
             if (UI.Button("Respiratory System"))
             {
                 Log.Info("Respiratory System button pressed");
-                UI.WindowEnd();
+                //UI.WindowEnd();
                 return 7;
             }
 
             if (UI.Button("Skeletal System"))
             {
                 Log.Info("Skeletal System button pressed");
-                UI.WindowEnd();
+                //UI.WindowEnd();
                 return 8;
             }
 
             if (UI.Button("Urinary System"))
             {
                 Log.Info("Urinary System button pressed");
-                UI.WindowEnd();
+                //UI.WindowEnd();
                 return 9;
             }
 
             UI.WindowEnd();
+            //UI.HandleEnd();
             return 0; // Indicate that the button was not pressed
         }
 
-        public static bool ModelInterface(Pose windowPose, Model model, ref int selectedAnim, ref bool loopAnim)
+        public static bool ModelInterface(ref Pose windowPose, Model model, ref int selectedAnim, ref bool loopAnim, ref float systemScale)
         {
+
+            Bounds panelBounds = new Bounds(Vec3.Zero, new Vec3(0.45f, 0.40f, 0.02f));
+            UI.HandleBegin("model-window-handle", ref windowPose, panelBounds);
+
             UI.WindowBegin("Model Controls", ref windowPose);
 
             //UI.Label("This is the Model Interface");
@@ -91,6 +100,10 @@ namespace Scene
                 UI.WindowEnd();
                 return true; // Indicate that the button was pressed
             }
+
+            // Scale slider for the big model
+            UI.Label("Model Scale");
+            UI.HSlider("system-scale", ref systemScale, 0.2f, 1.0f, 0.1f);
 
             UI.HSeparator();
             UI.Label($"Animations ({model.Anims.Count}):");
@@ -142,6 +155,7 @@ namespace Scene
 
 
             UI.WindowEnd();
+            UI.HandleEnd();
             return false; // Indicate that the button was not pressed
         }
     }
