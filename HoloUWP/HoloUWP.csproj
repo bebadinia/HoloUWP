@@ -76,6 +76,8 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Scene\AppState.cs" />
+    <Compile Include="Scene\SystemModels.cs" />
     <Compile Include="Scene\LoadPoses.cs" />
     <Compile Include="Scene\LoadModels.cs" />
     <Compile Include="Scene\LoadInterface.cs" />

@@ -1,6 +1,7 @@
+using Scene;
 using StereoKit;
 using System;
-using Scene;
+using System.Reflection;
 
 namespace HoloUWP
 {
@@ -19,18 +20,18 @@ namespace HoloUWP
             if (!SK.Initialize(settings))
                 Environment.Exit(1);
 
-
-            var models = LoadModels.LoadAll();     // load once
-            var poses = LoadPoses.CreateDefaults();            // set default transforms
+            SystemsModels.LoadAll();               // load once
+            //var models = LoadModels.LoadAll();                  // load once
+            //var poses = LoadPoses.CreateDefaults();            // set default transforms
 
             bool showUI = true;
             int startButtonPressed = 0;
 
-            int selectedAnim = 0;       // current anim index for the active model
-            bool loopAnim = false;    // loop toggle
+           // int selectedAnim = 0;       // current anim index for the active model
+            //bool loopAnim = false;    // loop toggle
 
             // Tiny preview scale for the on-panel model
-            float previewScale = 0.10f;
+            //float previewScale = 0.10f;
 
 
             SK.Run(() =>
@@ -38,6 +39,7 @@ namespace HoloUWP
                 
                 if (showUI)
                 {
+                    /*
                     var startPose = poses.startingWinPose;                              // copy to local
                     int choice = LoadInterfaces.DrawStartInterface(ref startPose);      // pass local by ref
                     poses.startingWinPose = startPose;                                  // write back
@@ -47,6 +49,16 @@ namespace HoloUWP
                         startButtonPressed = choice;
                         showUI = false;
                     }
+                    */
+
+                    int choice = LoadInterfaces.DrawStartInterface();   
+                    
+                    if (choice != 0)
+                    {
+                        startButtonPressed = choice;
+                        showUI = false;
+                    }
+
                 }
                 else
                 {
@@ -54,6 +66,72 @@ namespace HoloUWP
                     Model? active = null;
 
                     switch (startButtonPressed)
+                    {
+                        case 1:
+                            // Draw the circulatory system
+                            active = SystemsModels.Circulatory;
+                            break;
+                        case 2:
+                            // Draw the digestive system
+                            active = SystemsModels.Digestive;
+                            break;
+                        case 3:
+                            // Draw the endocrine system
+                            active = SystemsModels.Endocrine;
+                            break;
+                        case 4:
+                            // Draw the lymphatic system
+                            active = SystemsModels.Lymphatic;
+                            break;
+                        case 5:
+                            // Draw the muscular system
+                            active = SystemsModels.Muscular;
+                            break;
+                        case 6:
+                            // Draw the nervous system
+                            active = SystemsModels.Nervous;
+                            break;
+                        case 7:
+                            // Draw the respiratory system
+                            active = SystemsModels.Respiratory;
+                            break;
+                        case 8:
+                            // Draw the skeletal system
+                            active = SystemsModels.Skeletal;
+                            break;
+                        case 9:
+                            // Draw the urinary system
+                            active = SystemsModels.Urinary;
+                            break;
+                        default:
+                            System.Diagnostics.Debug.WriteLine("Unknown button pressed state");
+                            break;
+                    }
+
+
+                    if (active != null)
+                    {
+                        bool goBack = LoadInterfaces.ModelInterface(active);
+
+                        
+                        if (goBack)
+                        {
+                            showUI = true;
+                            startButtonPressed = 0;
+                            System.Diagnostics.Debug.WriteLine("Going back to home screen");
+                        }
+
+                        //Bounds humanBounds = new Bounds(Vec3.Zero, new Vec3(0.6f, 1.8f, 0.6f));
+                        //var systemPose = poses.systemPose;   // local copy so we can pass by ref
+                        //UI.HandleBegin("system-handle", ref systemPose, humanBounds);
+                        //UI.HandleEnd();
+                        //poses.systemPose = systemPose;       // write back the updated window pose
+
+                        // Draw the big model with the current scale
+                        active.Draw(AppState.SystemPose, AppState.SystemScale);
+                    }
+
+                    /*switch (startButtonPressed)
                     {
                         case 1:
                             // Draw the circulatory system
@@ -94,14 +172,14 @@ namespace HoloUWP
                         default:
                             Log.Warn("Unknown button pressed state");
                             break;
-                    }
+                    }*/
 
-                    if (active != null)
+                    /*if (active != null)
                     {
                         var modelWinPose = poses.modelWinPose;   // local copy so we can pass by ref
                         float scale = poses.systemScale;         // local copy so we can pass by ref
 
-                        bool goBack = LoadInterfaces.ModelInterface(ref modelWinPose, active, ref selectedAnim, ref loopAnim/*, ref scale*/);
+                        bool goBack = LoadInterfaces.ModelInterface(ref modelWinPose, active, ref selectedAnim, ref loopAnim, ref scale);
 
                         poses.modelWinPose = modelWinPose;       // write back the updated window pose
                         poses.systemScale = scale;              // write back the updated scale
@@ -122,7 +200,7 @@ namespace HoloUWP
 
                         // Draw the big model with the current scale
                         active.Draw(poses.systemPose, poses.systemScale);
-                    }
+                    }*/
 
                 } 
 

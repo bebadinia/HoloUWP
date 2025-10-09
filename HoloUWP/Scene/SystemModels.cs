@@ -3,21 +3,31 @@
 
 namespace Scene
 {
-    public static class LoadModels
+    public static class SystemsModels
     {
-        public static Models LoadAll()
+        public static Model Circulatory;
+        public static Model Digestive;
+        public static Model Endocrine;
+        public static Model Lymphatic;
+        public static Model Muscular;
+        public static Model Nervous;
+        public static Model Respiratory;
+        public static Model Skeletal;
+        public static Model Urinary;
+
+        public static void LoadAll()
         {
             System.Diagnostics.Debug.WriteLine("Loading Models");
 
-            var circulatorySystem = Model.FromFile("circulatorySystem.glb");
-            var digestiveSystem = Model.FromFile("digestiveSystem.opt.glb");
-            var endocrineSystem = Model.FromFile("endocrineSystem.opt.glb");
-            var lymphaticSystem = Model.FromFile("lymphaticSystem.opt.glb");
-            var muscularSystem = Model.FromFile("muscularSystem.opt.glb");
-            var nervousSystem = Model.FromFile("nervousSystem.opt.glb");
-            var respiratorySystem = Model.FromFile("respiratorySystem.glb");
-            var skeletalSystem = Model.FromFile("skeletalSystem.opt.glb");
-            var urinarySystem = Model.FromFile("urinarySystem.opt.glb");
+            Circulatory = Model.FromFile("circulatorySystem.glb");
+            Digestive = Model.FromFile("digestiveSystem.opt.glb");
+            Endocrine = Model.FromFile("endocrineSystem.opt.glb");
+            Lymphatic = Model.FromFile("lymphaticSystem.opt.glb");
+            Muscular = Model.FromFile("muscularSystem.opt.glb");
+            Nervous = Model.FromFile("nervousSystem.opt.glb");
+            Respiratory = Model.FromFile("respiratorySystem.glb");
+            Skeletal = Model.FromFile("skeletalSystem.opt.glb");
+            Urinary = Model.FromFile("urinarySystem.opt.glb");
 
 
             // Try to play the animations if they exist
@@ -30,8 +40,6 @@ namespace Scene
             TryPlayFirstAnimation(respiratorySystem, AnimMode.Loop);
             TryPlayFirstAnimation(skeletalSystem, AnimMode.Loop);
             TryPlayFirstAnimation(urinarySystem, AnimMode.Loop); */
-
-            return new Models(circulatorySystem, digestiveSystem, endocrineSystem, lymphaticSystem, muscularSystem, nervousSystem, respiratorySystem, skeletalSystem, urinarySystem);
         }
 
 
@@ -52,9 +60,8 @@ namespace Scene
                 System.Diagnostics.Debug.WriteLine($"No animations found on {m}");
             }
         }
-    }
 
-     public record Models(Model circulatorySystem, Model digestiveSystem, Model endocrineSystem, Model lymphaticSystem, Model muscularSystem, Model nervousSystem, Model respiratorySystem, Model skeletalSystem, Model urinarySystem);
+    }
 }
     
 

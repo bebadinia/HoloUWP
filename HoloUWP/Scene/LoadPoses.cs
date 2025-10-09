@@ -1,5 +1,4 @@
-﻿
-using StereoKit;
+﻿using StereoKit;
 using System;
 
 namespace Scene
@@ -8,7 +7,7 @@ namespace Scene
     {
         public static ScenePoses CreateDefaults()
         {
-            Console.WriteLine("Creating Poses");
+            System.Diagnostics.Debug.WriteLine("Creating Poses");
 
             //Interfaces
             var startingWinPose = new Pose(0, 0, -0.5f, Quat.LookDir(-Vec3.Forward));
