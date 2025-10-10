@@ -122,8 +122,9 @@ namespace HoloUWP
                         }
 
                         //Bounds humanBounds = new Bounds(Vec3.Zero, new Vec3(0.6f, 1.8f, 0.6f));
-                        //var systemPose = poses.systemPose;   // local copy so we can pass by ref
-                        //UI.HandleBegin("system-handle", ref systemPose, humanBounds);
+                        Bounds humanBounds= active.Bounds;
+                        humanBounds.dimensions *= AppState.SystemScale * 1.05f; // a tiny padding helps selection
+                        UI.Handle("system-handle", ref AppState.SystemPose, humanBounds);
                         //UI.HandleEnd();
                         //poses.systemPose = systemPose;       // write back the updated window pose
 
