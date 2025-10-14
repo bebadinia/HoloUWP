@@ -1,4 +1,6 @@
 ﻿using StereoKit;
+using System;
+using System.Reflection;
 
 
 namespace Scene
@@ -31,15 +33,40 @@ namespace Scene
 
 
             // Try to play the animations if they exist
-            /*TryPlayFirstAnimation(circulatorySystem, AnimMode.Loop);
-            TryPlayFirstAnimation(digestiveSystem, AnimMode.Loop);
-            TryPlayFirstAnimation(endocrineSystem, AnimMode.Loop);
-            TryPlayFirstAnimation(lymphaticSystem, AnimMode.Loop);
-            TryPlayFirstAnimation(muscularSystem, AnimMode.Loop);
-            TryPlayFirstAnimation(nervousSystem, AnimMode.Loop);
-            TryPlayFirstAnimation(respiratorySystem, AnimMode.Loop);
-            TryPlayFirstAnimation(skeletalSystem, AnimMode.Loop);
-            TryPlayFirstAnimation(urinarySystem, AnimMode.Loop); */
+            TryPlayFirstAnimation(Circulatory, AnimMode.Once);
+            //TryPlayFirstAnimation(digestiveSystem, AnimMode.Loop);
+            //TryPlayFirstAnimation(endocrineSystem, AnimMode.Loop);
+            //TryPlayFirstAnimation(lymphaticSystem, AnimMode.Loop);
+            //TryPlayFirstAnimation(muscularSystem, AnimMode.Loop);
+            //TryPlayFirstAnimation(nervousSystem, AnimMode.Loop);
+            TryPlayFirstAnimation(Respiratory, AnimMode.Once);
+            //TryPlayFirstAnimation(skeletalSystem, AnimMode.Loop);
+            //TryPlayFirstAnimation(urinarySystem, AnimMode.Loop); 
+
+            ModelNode node = Circulatory.RootNode;
+            int depth = 0;
+            while (node != null)
+            {
+                string tabs = new string(' ', depth * 2);
+                System.Diagnostics.Debug.WriteLine(tabs + node.Name);
+
+                if (node.Child != null) { node = node.Child; depth++; }
+                else if (node.Sibling != null) node = node.Sibling;
+                else
+                {
+                    while (node != null)
+                    {
+                        if (node.Sibling != null)
+                        {
+                            node = node.Sibling;
+                            break;
+                        }
+                        depth--;
+                        node = node.Parent;
+                    }
+                }
+            }
+
         }
 
 
@@ -49,7 +76,7 @@ namespace Scene
             {
                 for (int i = 0; i < m.Anims.Count; i++)
                 {
-                    Log.Info($"Anim {i}: {m.Anims[i].Name}");
+                    System.Diagnostics.Debug.WriteLine($"Anim {i}: {m.Anims[i].Name}");
                 }
                 string name = m.Anims[0].Name;
                 System.Diagnostics.Debug.WriteLine($"Playing anim: {name}");

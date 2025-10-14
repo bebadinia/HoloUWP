@@ -39,18 +39,6 @@ namespace HoloUWP
                 
                 if (showUI)
                 {
-                    /*
-                    var startPose = poses.startingWinPose;                              // copy to local
-                    int choice = LoadInterfaces.DrawStartInterface(ref startPose);      // pass local by ref
-                    poses.startingWinPose = startPose;                                  // write back
-
-                    if (choice != 0)
-                    {
-                        startButtonPressed = choice;
-                        showUI = false;
-                    }
-                    */
-
                     int choice = LoadInterfaces.DrawStartInterface();   
                     
                     if (choice != 0)
@@ -111,6 +99,10 @@ namespace HoloUWP
 
                     if (active != null)
                     {
+
+                        
+                        
+
                         bool goBack = LoadInterfaces.ModelInterface(active);
 
                         
@@ -121,87 +113,79 @@ namespace HoloUWP
                             System.Diagnostics.Debug.WriteLine("Going back to home screen");
                         }
 
-                        //Bounds humanBounds = new Bounds(Vec3.Zero, new Vec3(0.6f, 1.8f, 0.6f));
-                        Bounds humanBounds= active.Bounds;
-                        humanBounds.dimensions *= AppState.SystemScale * 1.05f; // a tiny padding helps selection
-                        UI.Handle("system-handle", ref AppState.SystemPose, humanBounds);
+                       // Bounds HumanBounds = new Bounds(Vec3.Zero, new Vec3(0.6f, 1.8f, 0.6f));
+                        Bounds HumanBounds= active.Bounds;
+                        //humanBounds.dimensions *= AppState.SystemScale * 1.05f; // a tiny padding helps selection
+                        UI.Handle("system-handle", ref AppState.SystemPose, HumanBounds);
                         //UI.HandleEnd();
-                        //poses.systemPose = systemPose;       // write back the updated window pose
+
+                        // visualize the grab volume while debugging
+                        //Mesh.Cube.Draw(Material.Unlit, Matrix.TRS(AppState.SystemPose.position, AppState.SystemPose.orientation, HumanBounds.dimensions));
 
                         // Draw the big model with the current scale
+                        active.Draw(AppState.SystemPose, AppState.SystemScale); 
+
+
+                        // --- Re-anchor the handle at the chest ---
+                        /*var HumanBounds = active.Bounds;                                        // model-space AABB
+                        float totalHeight = HumanBounds.dimensions.y;
+                        float bottomY = HumanBounds.center.y - totalHeight * 0.5f;             // estimated feet height in model space
+                        float middleF = 0.58f;                                                 // ~sternum height as a fraction of total height (tweak 0.55-0.62)
+                        float middleY = bottomY + totalHeight * middleF;*/
+
+                        /* // Chest position in model space
+                         Vec3 chestLocal = new Vec3(b.center.x, chestY, b.center.z);
+
+                         // Bounds of the model relative to the chest pivot (scaled)
+                         Bounds handleBounds = new Bounds(
+                             (b.center - chestLocal) * AppState.SystemScale,
+                             b.dimensions * AppState.SystemScale);
+
+                         // Grabbable handle whose pose is now "at the chest"
+                         UI.Handle("system-handle", ref AppState.SystemPose, handleBounds);
+
+                         // Draw the model *offset down* from the chest pivot so visuals align
+                         Matrix modelXform = Matrix.TRS(
+                             AppState.SystemPose.position - (AppState.SystemPose.orientation * (chestLocal * AppState.SystemScale)),
+                             AppState.SystemPose.orientation,
+                             AppState.SystemScale);*/
+
+                        //active.Draw(modelXform);
+
+                        // --- VISUALIZE: feet / chest / head in world space ---
+                       /* Vec3 feetLocal = new Vec3(HumanBounds.center.x, bottomY, HumanBounds.center.z);
+                        Vec3 chestLocal = new Vec3(HumanBounds.center.x, middleY, HumanBounds.center.z);
+                        Vec3 headLocal = new Vec3(HumanBounds.center.x, bottomY + totalHeight, HumanBounds.center.z);
+
+                        Matrix modelXform = Matrix.TRS(
+                            AppState.SystemPose.position,
+                            AppState.SystemPose.orientation,
+                            AppState.SystemScale
+                        );
+
+                        // --- Transform markers into world space ---
+                        Vec3 feetWorld = modelXform.Transform(feetLocal);
+                        Vec3 chestWorld = modelXform.Transform(chestLocal);
+                        Vec3 headWorld = modelXform.Transform(headLocal);
+
                         active.Draw(AppState.SystemPose, AppState.SystemScale);
+
+                        // --- Draw the markers ---
+                        float r = 0.05f * AppState.SystemScale; // marker radius
+                        Mesh.Sphere.Draw(Material.Unlit, Matrix.TS(feetWorld, r));   // feet
+                        Mesh.Sphere.Draw(Material.Unlit, Matrix.TS(chestWorld, r));   // chest
+                        Mesh.Sphere.Draw(Material.Unlit, Matrix.TS(headWorld, r));   // head
+
+                        // --- Log everything to the StereoKit log ---
+                        System.Diagnostics.Debug.WriteLine($"[BOUNDS] center=({HumanBounds.center.x:0.###},{HumanBounds.center.y:0.###},{HumanBounds.center.z:0.###})  size=({HumanBounds.dimensions.x:0.###},{b.dimensions.y:0.###},{b.dimensions.z:0.###})");
+                        System.Diagnostics.Debug.WriteLine($"[HEIGHT] h={h:0.###}  feetY={feetY:0.###}  chestF={chestF:0.##}  chestY={chestY:0.###}");
+                        System.Diagnostics.Debug.WriteLine($"[WORLD ] feet=({feetWorld.x:0.###},{feetWorld.y:0.###},{feetWorld.z:0.###})  chest=({chestWorld.x:0.###},{chestWorld.y:0.###},{chestWorld.z:0.###})  head=({headWorld.x:0.###},{headWorld.y:0.###},{headWorld.z:0.###})");
+
+                        //Optional: vertical guide line and labels
+                        try { Lines.Add(feetWorld, headWorld, Color.White, 0.004f); } catch {}*/
+                        
+
                     }
-
-                    /*switch (startButtonPressed)
-                    {
-                        case 1:
-                            // Draw the circulatory system
-                            active = models.circulatorySystem;
-                            break;
-                        case 2:
-                            // Draw the digestive system
-                            active = models.digestiveSystem;
-                            break;
-                        case 3:
-                            // Draw the endocrine system
-                            active = models.endocrineSystem;
-                            break;
-                        case 4:
-                            // Draw the lymphatic system
-                            active = models.lymphaticSystem;
-                            break;
-                        case 5:
-                            // Draw the muscular system
-                            active = models.muscularSystem;
-                            break;
-                        case 6:
-                            // Draw the nervous system
-                            active = models.nervousSystem;
-                            break;
-                        case 7:
-                            // Draw the respiratory system
-                            active = models.respiratorySystem;
-                            break;
-                        case 8:
-                            // Draw the skeletal system
-                            active = models.skeletalSystem;
-                            break;
-                        case 9:
-                            // Draw the urinary system
-                            active = models.urinarySystem;
-                            break;
-                        default:
-                            Log.Warn("Unknown button pressed state");
-                            break;
-                    }*/
-
-                    /*if (active != null)
-                    {
-                        var modelWinPose = poses.modelWinPose;   // local copy so we can pass by ref
-                        float scale = poses.systemScale;         // local copy so we can pass by ref
-
-                        bool goBack = LoadInterfaces.ModelInterface(ref modelWinPose, active, ref selectedAnim, ref loopAnim, ref scale);
-
-                        poses.modelWinPose = modelWinPose;       // write back the updated window pose
-                        poses.systemScale = scale;              // write back the updated scale
-                        //LoadInterfaces.ModelInterface(poses.modelWinPose) == true
-                        if (goBack)
-                        {
-                            showUI = true;
-                            startButtonPressed = 0;
-                            selectedAnim = 0;
-                            Log.Info("Model interface button pressed - Implement further actions here");
-                        }
-
-                        //Bounds humanBounds = new Bounds(Vec3.Zero, new Vec3(0.6f, 1.8f, 0.6f));
-                        //var systemPose = poses.systemPose;   // local copy so we can pass by ref
-                        //UI.HandleBegin("system-handle", ref systemPose, humanBounds);
-                        //UI.HandleEnd();
-                        //poses.systemPose = systemPose;       // write back the updated window pose
-
-                        // Draw the big model with the current scale
-                        active.Draw(poses.systemPose, poses.systemScale);
-                    }*/
 
                 } 
 
