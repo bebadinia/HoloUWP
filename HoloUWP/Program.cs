@@ -49,6 +49,7 @@ namespace HoloUWP
                     {
                         startButtonPressed = choice;
                         showUI = false;
+                        AppState.Anchored = false;     // <- re-anchor model and UI next frame
                     }
 
                 }
@@ -110,6 +111,7 @@ namespace HoloUWP
                         {
                             showUI = true;
                             startButtonPressed = 0;
+                            AppState.Anchored = false;
                             System.Diagnostics.Debug.WriteLine("Going back to home screen");
                         }
 
@@ -119,9 +121,6 @@ namespace HoloUWP
                         // UI.Handle("system-handle", ref AppState.SystemPose, HumanBounds);
                         //UI.HandleEnd();
 
-                        
-
-                        
 
                         // Lookup per-system config directly by the selected button id.
                         if (startButtonPressed != 0)
@@ -140,6 +139,24 @@ namespace HoloUWP
 
                             // Chest pivot in model space using manual local offset
                             Vec3 chestLocal = new Vec3(HumanBounds.center.x, middleY, HumanBounds.center.z) + cfg.offsetLocal;
+
+                            // One time anchor of the handle pose relative to the Start Menu
+                            if (!AppState.Anchored)
+                            {
+                                // Base of system relative to the Start Menu
+                                // +X = right of the menu, +Y = up, -Z = in front (toward the user), +Z = behind
+                                Vec3 modelFromMenu = new Vec3(-0.75f, 0.00f, 0.50f); // tweak to taste
+
+                                // AnchorSystem: pose at menu + rotated offset, inherit menu facing
+                                AppState.SystemPose.position = AppState.StartingWinPose.position + (AppState.StartingWinPose.orientation * modelFromMenu);
+                                AppState.SystemPose.orientation = AppState.StartingWinPose.orientation;
+
+                                // Anchor Model UI making it the same as Start window
+                                AppState.ModelWinPose.position = AppState.StartingWinPose.position;
+                                AppState.ModelWinPose.orientation = AppState.StartingWinPose.orientation;
+
+                                AppState.Anchored = true; // don’t re-anchor after user grabs it
+                            }
 
                             // Bounds of the model relative to the chest pivot (scaled)
                             Bounds handleBounds = new Bounds(

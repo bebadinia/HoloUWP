@@ -8,9 +8,13 @@ namespace Scene
         //Interfaces
         public static Pose StartingWinPose = new Pose(0, 0, -0.5f, Quat.LookDir(-Vec3.Forward));
         public static Pose ModelWinPose = new Pose(-0.25f, 0, -0.5f, Quat.LookDir(-Vec3.Forward));
-
         //Models
         public static Pose SystemPose = new Pose(0, 0, -1f, Quat.LookDir(-Vec3.Forward));
+
+        // Model/UI placement state so we only anchor once
+        public static bool Anchored = false;
+
+
 
         //Main Scale for Models
         public static float SystemScale = 1.0f;
@@ -40,12 +44,24 @@ namespace Scene
         //Reset to defaults
         public static void Reset()
         {
-            StartingWinPose = new Pose(0, 0, -0.5f, Quat.LookDir(-Vec3.Forward));
-            ModelWinPose = new Pose(-0.25f, 0, -0.5f, Quat.LookDir(-Vec3.Forward));
-            SystemPose = new Pose(0, -1.5f, -1f, Quat.LookDir(-Vec3.Forward));
+            //StartingWinPose = new Pose(0, 0, -0.5f, Quat.LookDir(-Vec3.Forward));
+            // Base of system relative to the Start Menu
+            // +X = right of the menu, +Y = up, -Z = in front (toward the user), +Z = behind
+            Vec3 modelFromMenu = new Vec3(-0.75f, 0.00f, 0.50f); // tweak to taste
+
+            // AnchorSystem: pose at menu + rotated offset, inherit menu facing
+            AppState.SystemPose.position = AppState.StartingWinPose.position + (AppState.StartingWinPose.orientation * modelFromMenu);
+            AppState.SystemPose.orientation = AppState.StartingWinPose.orientation;
+
+            // Anchor Model UI making it the same as Start window
+            AppState.ModelWinPose.position = AppState.StartingWinPose.position;
+            AppState.ModelWinPose.orientation = AppState.StartingWinPose.orientation;
             SystemScale = 1.0f;
             SelectedAnim = 0;
             LoopAnim = false;
+
+            // important: allow re-anchoring next time
+            Anchored = false;
         }
 
     }
