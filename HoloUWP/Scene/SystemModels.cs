@@ -43,7 +43,8 @@ namespace Scene
             //TryPlayFirstAnimation(skeletalSystem, AnimMode.Loop);
             //TryPlayFirstAnimation(urinarySystem, AnimMode.Loop); 
 
-            ModelNode node = Circulatory.RootNode;
+            // Uncomment to show the different Nodes
+            ModelNode node = Skeletal.RootNode;
             int depth = 0;
             while (node != null)
             {
@@ -63,8 +64,8 @@ namespace Scene
                         }
                         depth--;
                         node = node.Parent;
-                    }
-                }
+                    } 
+                } 
             }
 
         }

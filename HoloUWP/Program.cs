@@ -1,12 +1,18 @@
-using Scene;
+﻿using Scene;
 using StereoKit;
 using System;
 using System.Reflection;
 
+
 namespace HoloUWP
 {
-    internal class Program
+    class Program
     {
+
+#if DEBUG
+        static bool runOnce = true;  // only exists in Debug builds
+#endif
+
         static void Main(string[] args)
         {
             // Initialize StereoKit
@@ -21,8 +27,6 @@ namespace HoloUWP
                 Environment.Exit(1);
 
             SystemsModels.LoadAll();               // load once
-            //var models = LoadModels.LoadAll();                  // load once
-            //var poses = LoadPoses.CreateDefaults();            // set default transforms
 
             bool showUI = true;
             int startButtonPressed = 0;
@@ -99,10 +103,6 @@ namespace HoloUWP
 
                     if (active != null)
                     {
-
-                        
-                        
-
                         bool goBack = LoadInterfaces.ModelInterface(active);
 
                         
@@ -113,77 +113,90 @@ namespace HoloUWP
                             System.Diagnostics.Debug.WriteLine("Going back to home screen");
                         }
 
-                       // Bounds HumanBounds = new Bounds(Vec3.Zero, new Vec3(0.6f, 1.8f, 0.6f));
-                        Bounds HumanBounds= active.Bounds;
+                        // Bounds HumanBounds = new Bounds(Vec3.Zero, new Vec3(0.6f, 1.8f, 0.6f));
+                        //Bounds HumanBounds= active.Bounds;
                         //humanBounds.dimensions *= AppState.SystemScale * 1.05f; // a tiny padding helps selection
-                        UI.Handle("system-handle", ref AppState.SystemPose, HumanBounds);
+                        // UI.Handle("system-handle", ref AppState.SystemPose, HumanBounds);
                         //UI.HandleEnd();
 
-                        // visualize the grab volume while debugging
-                        //Mesh.Cube.Draw(Material.Unlit, Matrix.TRS(AppState.SystemPose.position, AppState.SystemPose.orientation, HumanBounds.dimensions));
-
-                        // Draw the big model with the current scale
-                        active.Draw(AppState.SystemPose, AppState.SystemScale); 
-
-
-                        // --- Re-anchor the handle at the chest ---
-                        /*var HumanBounds = active.Bounds;                                        // model-space AABB
-                        float totalHeight = HumanBounds.dimensions.y;
-                        float bottomY = HumanBounds.center.y - totalHeight * 0.5f;             // estimated feet height in model space
-                        float middleF = 0.58f;                                                 // ~sternum height as a fraction of total height (tweak 0.55-0.62)
-                        float middleY = bottomY + totalHeight * middleF;*/
-
-                        /* // Chest position in model space
-                         Vec3 chestLocal = new Vec3(b.center.x, chestY, b.center.z);
-
-                         // Bounds of the model relative to the chest pivot (scaled)
-                         Bounds handleBounds = new Bounds(
-                             (b.center - chestLocal) * AppState.SystemScale,
-                             b.dimensions * AppState.SystemScale);
-
-                         // Grabbable handle whose pose is now "at the chest"
-                         UI.Handle("system-handle", ref AppState.SystemPose, handleBounds);
-
-                         // Draw the model *offset down* from the chest pivot so visuals align
-                         Matrix modelXform = Matrix.TRS(
-                             AppState.SystemPose.position - (AppState.SystemPose.orientation * (chestLocal * AppState.SystemScale)),
-                             AppState.SystemPose.orientation,
-                             AppState.SystemScale);*/
-
-                        //active.Draw(modelXform);
-
-                        // --- VISUALIZE: feet / chest / head in world space ---
-                       /* Vec3 feetLocal = new Vec3(HumanBounds.center.x, bottomY, HumanBounds.center.z);
-                        Vec3 chestLocal = new Vec3(HumanBounds.center.x, middleY, HumanBounds.center.z);
-                        Vec3 headLocal = new Vec3(HumanBounds.center.x, bottomY + totalHeight, HumanBounds.center.z);
-
-                        Matrix modelXform = Matrix.TRS(
-                            AppState.SystemPose.position,
-                            AppState.SystemPose.orientation,
-                            AppState.SystemScale
-                        );
-
-                        // --- Transform markers into world space ---
-                        Vec3 feetWorld = modelXform.Transform(feetLocal);
-                        Vec3 chestWorld = modelXform.Transform(chestLocal);
-                        Vec3 headWorld = modelXform.Transform(headLocal);
-
-                        active.Draw(AppState.SystemPose, AppState.SystemScale);
-
-                        // --- Draw the markers ---
-                        float r = 0.05f * AppState.SystemScale; // marker radius
-                        Mesh.Sphere.Draw(Material.Unlit, Matrix.TS(feetWorld, r));   // feet
-                        Mesh.Sphere.Draw(Material.Unlit, Matrix.TS(chestWorld, r));   // chest
-                        Mesh.Sphere.Draw(Material.Unlit, Matrix.TS(headWorld, r));   // head
-
-                        // --- Log everything to the StereoKit log ---
-                        System.Diagnostics.Debug.WriteLine($"[BOUNDS] center=({HumanBounds.center.x:0.###},{HumanBounds.center.y:0.###},{HumanBounds.center.z:0.###})  size=({HumanBounds.dimensions.x:0.###},{b.dimensions.y:0.###},{b.dimensions.z:0.###})");
-                        System.Diagnostics.Debug.WriteLine($"[HEIGHT] h={h:0.###}  feetY={feetY:0.###}  chestF={chestF:0.##}  chestY={chestY:0.###}");
-                        System.Diagnostics.Debug.WriteLine($"[WORLD ] feet=({feetWorld.x:0.###},{feetWorld.y:0.###},{feetWorld.z:0.###})  chest=({chestWorld.x:0.###},{chestWorld.y:0.###},{chestWorld.z:0.###})  head=({headWorld.x:0.###},{headWorld.y:0.###},{headWorld.z:0.###})");
-
-                        //Optional: vertical guide line and labels
-                        try { Lines.Add(feetWorld, headWorld, Color.White, 0.004f); } catch {}*/
                         
+
+                        
+
+                        // Lookup per-system config directly by the selected button id.
+                        if (startButtonPressed != 0)
+                        {
+                            // Config for each system
+                            var cfg = AppState.ChestAdj[startButtonPressed];
+
+                            // Model-space bounds and chest point
+                            Bounds HumanBounds = active.Bounds;
+                            float totalHeight = HumanBounds.dimensions.y;
+                            float bottomY = HumanBounds.center.y - totalHeight * 0.5f;
+
+                           
+                            float middleF = cfg.chestF;     // fraction of height
+                            float middleY = bottomY + totalHeight * middleF;
+
+                            // Chest pivot in model space using manual local offset
+                            Vec3 chestLocal = new Vec3(HumanBounds.center.x, middleY, HumanBounds.center.z) + cfg.offsetLocal;
+
+                            // Bounds of the model relative to the chest pivot (scaled)
+                            Bounds handleBounds = new Bounds(
+                                  (HumanBounds.center - chestLocal) * AppState.SystemScale,     // center offset
+                                  HumanBounds.dimensions * AppState.SystemScale * 1.01f);       // tiny padding
+
+                            // Grabbable handle with adjusted grab point
+                            UI.Handle("system-handle", ref AppState.SystemPose, handleBounds);
+
+
+                            // Draw model offset so visuals stay aligned under the chest pivot
+                            Matrix modelXform = Matrix.TRS(
+                                  AppState.SystemPose.position - (AppState.SystemPose.orientation * (chestLocal * AppState.SystemScale)),
+                                  AppState.SystemPose.orientation,
+                                  AppState.SystemScale);
+
+                            active.Draw(modelXform);
+
+                            // visualize the grab volume while debugging
+                            //Mesh.Cube.Draw(Material.Unlit, Matrix.TRS(AppState.SystemPose.position, AppState.SystemPose.orientation, HumanBounds.dimensions));
+
+
+
+#if false
+                            if (runOnce)
+                            {
+                                foreach (ModelNode node in active.Nodes)
+                                {
+
+                                    Matrix nodeWorld =
+                                        modelXform * node.ModelTransform; // or node.Transform in some versions
+                                    Vec3 p = nodeWorld.Translation;
+                                    System.Diagnostics.Debug.WriteLine(
+                                        $"[NODE ] {node.Name} world=({p.x:0.###},{p.y:0.###},{p.z:0.###})");
+                                }
+
+                                System.Diagnostics.Debug.WriteLine($"[btn {startButtonPressed}] chestF={middleF:0.##} offset=({cfg.offsetLocal.x:0.###},{cfg.offsetLocal.y:0.###},{cfg.offsetLocal.z:0.###})");
+
+                                runOnce = false;
+                            }
+#endif
+
+
+                            /* System.Diagnostics.Debug.WriteLine(
+                                 $"[BOUNDS] center=({HumanBounds.center.x:0.###},{HumanBounds.center.y:0.###},{HumanBounds.center.z:0.###}) " +
+                                 $"size=({HumanBounds.dimensions.x:0.###},{HumanBounds.dimensions.y:0.###},{HumanBounds.dimensions.z:0.###})");
+                             System.Diagnostics.Debug.WriteLine(
+                                 $"[HEIGHT] totalHeight={totalHeight:0.###} bottomY={bottomY:0.###} middleF={middleF:0.##} middleY={middleY:0.###}");
+                             System.Diagnostics.Debug.WriteLine(
+                                 $"[WORLD ] feet=({feetWorld.x:0.###},{feetWorld.y:0.###},{feetWorld.z:0.###}) " +
+                                 $"chest=({chestWorld.x:0.###},{chestWorld.y:0.###},{chestWorld.z:0.###}) " +
+                                 $"head=({headWorld.x:0.###},{headWorld.y:0.###},{headWorld.z:0.###})");*/
+                        }
+
+
+
+
 
                     }
 
