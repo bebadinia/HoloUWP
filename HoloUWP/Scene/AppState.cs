@@ -41,6 +41,9 @@ namespace Scene
         public static int SelectedAnim = 0;
         public static bool LoopAnim = false;
 
+        // Label state
+        public static bool ShowLabels = false;
+
         //Reset to defaults
         public static void Reset()
         {
@@ -60,8 +63,11 @@ namespace Scene
             SelectedAnim = 0;
             LoopAnim = false;
 
+            ShowLabels = false;
+
             // important: allow re-anchoring next time
             Anchored = false;
+
         }
 
     }

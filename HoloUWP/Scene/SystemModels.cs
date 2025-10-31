@@ -17,6 +17,16 @@ namespace Scene
         public static Model Skeletal;
         public static Model Urinary;
 
+        public static Model CirculatoryNL;
+        public static Model DigestiveNL;
+        public static Model EndocrineNL;
+        public static Model LymphaticNL;
+        public static Model MuscularNL;
+        public static Model NervousNL;
+        public static Model RespiratoryNL;
+        public static Model SkeletalNL;
+        public static Model UrinaryNL;
+
         public static void LoadAll()
         {
             System.Diagnostics.Debug.WriteLine("Loading Models");
@@ -31,15 +41,26 @@ namespace Scene
             Skeletal = Model.FromFile("skeletalSystem.opt.glb");
             Urinary = Model.FromFile("urinarySystem.opt.glb");
 
+            CirculatoryNL = Model.FromFile("circulatorySystemNL.glb");
+            DigestiveNL = Model.FromFile("digestiveSystemNL.opt.glb");
+            EndocrineNL = Model.FromFile("endocrineSystemNL.opt.glb");
+            LymphaticNL = Model.FromFile("lymphaticSystemNL.opt.glb");
+            MuscularNL = Model.FromFile("muscularSystemNL.opt.glb");
+            NervousNL = Model.FromFile("nervousSystemNL.opt.glb");
+            RespiratoryNL = Model.FromFile("respiratorySystemNL.glb");
+            SkeletalNL = Model.FromFile("skeletalSystemNL.opt.glb");
+            UrinaryNL = Model.FromFile("urinarySystemNL.opt.glb");
 
             // Try to play the animations if they exist
             TryPlayFirstAnimation(Circulatory, AnimMode.Once);
+            TryPlayFirstAnimation(CirculatoryNL, AnimMode.Once);
             //TryPlayFirstAnimation(digestiveSystem, AnimMode.Loop);
             //TryPlayFirstAnimation(endocrineSystem, AnimMode.Loop);
             //TryPlayFirstAnimation(lymphaticSystem, AnimMode.Loop);
             //TryPlayFirstAnimation(muscularSystem, AnimMode.Loop);
             //TryPlayFirstAnimation(nervousSystem, AnimMode.Loop);
             TryPlayFirstAnimation(Respiratory, AnimMode.Once);
+            TryPlayFirstAnimation(RespiratoryNL, AnimMode.Once);
             //TryPlayFirstAnimation(skeletalSystem, AnimMode.Loop);
             //TryPlayFirstAnimation(urinarySystem, AnimMode.Loop); 
 

@@ -62,39 +62,39 @@ namespace HoloUWP
                     {
                         case 1:
                             // Draw the circulatory system
-                            active = SystemsModels.Circulatory;
+                            active = AppState.ShowLabels ? SystemsModels.Circulatory : SystemsModels.CirculatoryNL;
                             break;
                         case 2:
                             // Draw the digestive system
-                            active = SystemsModels.Digestive;
+                            active = AppState.ShowLabels ? SystemsModels.Digestive : SystemsModels.DigestiveNL;
                             break;
                         case 3:
                             // Draw the endocrine system
-                            active = SystemsModels.Endocrine;
+                            active = AppState.ShowLabels ? SystemsModels.Endocrine : SystemsModels.EndocrineNL;
                             break;
                         case 4:
                             // Draw the lymphatic system
-                            active = SystemsModels.Lymphatic;
+                            active = AppState.ShowLabels ? SystemsModels.Lymphatic : SystemsModels.LymphaticNL;
                             break;
                         case 5:
                             // Draw the muscular system
-                            active = SystemsModels.Muscular;
+                            active = AppState.ShowLabels ? SystemsModels.Muscular : SystemsModels.MuscularNL;
                             break;
                         case 6:
                             // Draw the nervous system
-                            active = SystemsModels.Nervous;
+                            active = AppState.ShowLabels ? SystemsModels.Nervous : SystemsModels.NervousNL;
                             break;
                         case 7:
                             // Draw the respiratory system
-                            active = SystemsModels.Respiratory;
+                            active = AppState.ShowLabels ? SystemsModels.Respiratory : SystemsModels.RespiratoryNL;
                             break;
                         case 8:
                             // Draw the skeletal system
-                            active = SystemsModels.Skeletal;
+                            active = AppState.ShowLabels ? SystemsModels.Skeletal : SystemsModels.SkeletalNL;
                             break;
                         case 9:
                             // Draw the urinary system
-                            active = SystemsModels.Urinary;
+                            active = AppState.ShowLabels ? SystemsModels.Urinary : SystemsModels.UrinaryNL;
                             break;
                         default:
                             System.Diagnostics.Debug.WriteLine("Unknown button pressed state");

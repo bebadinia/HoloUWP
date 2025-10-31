@@ -108,16 +108,23 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\circulatorySystem.glb" />
+    <None Include="Assets\circulatorySystemNL.glb" />
     <None Include="Assets\digestiveSystem.opt.glb" />
+    <None Include="Assets\digestiveSystemNL.opt.glb" />
     <None Include="Assets\endocrineSystem.opt.glb" />
-    <None Include="Assets\Fox.glb" />
-    <None Include="Assets\Heart.opt.glb" />
+    <None Include="Assets\endocrineSystemNL.opt.glb" />
     <None Include="Assets\lymphaticSystem.opt.glb" />
+    <None Include="Assets\lymphaticSystemNL.opt.glb" />
+    <None Include="Assets\muscularSystemNL.opt.glb" />
     <None Include="Assets\muscularSystem.opt.glb" />
     <None Include="Assets\nervousSystem.opt.glb" />
+    <None Include="Assets\nervousSystemNL.opt.glb" />
     <None Include="Assets\respiratorySystem.glb" />
+    <None Include="Assets\respiratorySystemNL.glb" />
     <None Include="Assets\skeletalSystem.opt.glb" />
+    <None Include="Assets\skeletalSystemNL.opt.glb" />
     <None Include="Assets\urinarySystem.opt.glb" />
+    <None Include="Assets\urinarySystemNL.opt.glb" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '16.0' ">
     <VisualStudioVersion>16.0</VisualStudioVersion>

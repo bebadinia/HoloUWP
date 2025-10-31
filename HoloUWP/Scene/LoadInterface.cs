@@ -91,6 +91,8 @@ namespace Scene
                     model.PlayAnim(model.ActiveAnim,  AnimMode.Once); ; // Stop any active animation
                 }
 
+                AppState.ShowLabels = false;
+
                 return true; // Indicate that the button was pressed
             }
 
@@ -148,6 +150,18 @@ namespace Scene
                     model.PlayAnim(name, AppState.LoopAnim ? AnimMode.Loop : AnimMode.Once);
 
                     
+                }
+            }
+
+            UI.HSeparator();
+
+            if (UI.Toggle("Labels", ref AppState.ShowLabels))
+            {
+                // If an animation is already selected, restart it with the new loop setting
+                if (AppState.SelectedAnim >= 0 && AppState.SelectedAnim < model.Anims.Count)
+                {
+                    string name = model.Anims[AppState.SelectedAnim].Name;
+                    model.PlayAnim(name, AppState.LoopAnim ? AnimMode.Loop : AnimMode.Once);
                 }
             }
 
