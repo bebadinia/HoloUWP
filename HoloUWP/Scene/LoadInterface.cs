@@ -5,15 +5,19 @@ namespace Scene
 {
     public static class LoadInterfaces
     {
+        // Draw the starting interface and return the selected system index
         public static int DrawStartInterface()
         {
+            // Start result as 0 (no selection)
             int result = 0;
 
+            // Begin the main window at the stored pose
             UI.WindowBegin("Main Window", ref AppState.StartingWinPose);
 
             UI.Label("Welcome to the Mixed Reality Experience!");
             UI.Label("Choose a system to explore:");
 
+            // Buttons for each system - set result accordingly
             if (UI.Button("Circulatory System"))
             {
                 System.Diagnostics.Debug.WriteLine("Circulatory System button pressed");
@@ -69,17 +73,16 @@ namespace Scene
             }
 
             UI.WindowEnd();
-            return result; // Indicate that the button was not pressed
+            return result;
         }
 
-
+        // Draw the model interface and return true if the back button was pressed
         public static bool ModelInterface(Model model)
         {
+            // Begin the model window based on last position of main window
             UI.WindowBegin("Model Controls", ref AppState.ModelWinPose);
 
-            //UI.Label("This is the Model Interface");
-            //UI.Label("Use the menu to Go Back.");
-
+            // Back button to return to main interface
             if (UI.Button("◀  Back"))
             {
                 System.Diagnostics.Debug.WriteLine("Go Back button pressed");
@@ -88,7 +91,7 @@ namespace Scene
 
                 if (model.ActiveAnim != null)
                 {
-                    model.PlayAnim(model.ActiveAnim,  AnimMode.Once); ; // Stop any active animation
+                    model.PlayAnim(model.ActiveAnim,  AnimMode.Once); // Stop any active animation
                 }
 
                 AppState.ShowLabels = false;
@@ -98,14 +101,15 @@ namespace Scene
 
             UI.HSeparator();
 
-            // Scale slider for the big model
+            // Scale slider for the model
             UI.Label("Scale: ");
             UI.SameLine();
             UI.HSlider("system-scale", ref AppState.SystemScale, 0.2f, 1.0f, 0.1f, 0.15f);
 
             UI.HSeparator();
 
-            if (AppState.SelectedAnim < 0 || AppState.SelectedAnim >= model.Anims.Count) // Clamp selection just in case
+            // Clamp selection just in case
+            if (AppState.SelectedAnim < 0 || AppState.SelectedAnim >= model.Anims.Count) 
             {
                 AppState.SelectedAnim = 0;
             }
@@ -120,10 +124,12 @@ namespace Scene
             else
             {
                 UI.Label($"Animations ({model.Anims.Count}):");
+
                 // Radio list of all animations (one selectable)
                 for (int i = 0; i < model.Anims.Count; i++)
                 {
                     bool isActive = (AppState.SelectedAnim == i);
+
                     // StereoKit radio pattern: UI.Radio("label", ref int value, int id)
                     if (UI.Radio(model.Anims[i].Name, isActive))
                     {
@@ -134,6 +140,7 @@ namespace Scene
 
                 UI.HSeparator();
 
+                // Loop toggle for the animation
                 if (UI.Toggle("Loop", ref AppState.LoopAnim))
                 {
                     // If an animation is already selected, restart it with the new loop setting
@@ -144,17 +151,17 @@ namespace Scene
                     }
                 }
 
+                // Play button for the selected animation
                 if (UI.Button("▶  Play Selected"))
                 {
                     string name = model.Anims[AppState.SelectedAnim].Name;
                     model.PlayAnim(name, AppState.LoopAnim ? AnimMode.Loop : AnimMode.Once);
-
-                    
                 }
             }
 
             UI.HSeparator();
 
+            // Toggle for showing labels
             if (UI.Toggle("Labels", ref AppState.ShowLabels))
             {
                 // If an animation is already selected, restart it with the new loop setting
@@ -167,14 +174,14 @@ namespace Scene
 
             UI.HSeparator();
 
+            // Reset Models button
             if (UI.Button("Reset Models"))
             {
                 AppState.Reset();
             }
 
             UI.WindowEnd();
-            //UI.HandleEnd();
-            return false; // Indicate that the button was not pressed
+            return false; // Indicate that the back button was not pressed
         }
     }
 }

@@ -8,6 +8,7 @@ namespace Scene
         //Interfaces
         public static Pose StartingWinPose = new Pose(0, 0, -0.5f, Quat.LookDir(-Vec3.Forward));
         public static Pose ModelWinPose = new Pose(-0.25f, 0, -0.5f, Quat.LookDir(-Vec3.Forward));
+
         //Models
         public static Pose SystemPose = new Pose(0, 0, -1f, Quat.LookDir(-Vec3.Forward));
 

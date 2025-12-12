@@ -1,4 +1,6 @@
-﻿using StereoKit;
+﻿// SystemsModels.cs by Ben Ebadinia
+
+using StereoKit;
 using System;
 using System.Reflection;
 
@@ -27,7 +29,7 @@ namespace Scene
         public static Model SkeletalNL;
         public static Model UrinaryNL;
 
-        public static void LoadAll()
+        public static void LoadAll() // Load all the models
         {
             System.Diagnostics.Debug.WriteLine("Loading Models");
 
@@ -65,6 +67,7 @@ namespace Scene
             //TryPlayFirstAnimation(urinarySystem, AnimMode.Loop); 
 
             // Uncomment to show the different Nodes
+            /*
             ModelNode node = Skeletal.RootNode;
             int depth = 0;
             while (node != null)
@@ -87,8 +90,8 @@ namespace Scene
                         node = node.Parent;
                     } 
                 } 
-            }
-
+            } 
+            */
         }
 
 

@@ -1,16 +1,19 @@
-﻿using Scene;
+﻿// Program.cs by Ben Ebadinia
+
+using Scene;
 using StereoKit;
 using System;
 using System.Reflection;
 
-
 namespace HoloUWP
 {
+
     class Program
     {
 
+
 #if DEBUG
-        static bool runOnce = true;  // only exists in Debug builds
+        static bool runOnce = true;         // Only exists in Debug builds
 #endif
 
         static void Main(string[] args)
@@ -26,30 +29,27 @@ namespace HoloUWP
             if (!SK.Initialize(settings))
                 Environment.Exit(1);
 
-            SystemsModels.LoadAll();               // load once
+            SystemsModels.LoadAll();        // Load and Set all models once
 
+            // Show main menu and set initial selection state (No button pressed)
             bool showUI = true;
             int startButtonPressed = 0;
 
-           // int selectedAnim = 0;       // current anim index for the active model
-            //bool loopAnim = false;    // loop toggle
-
-            // Tiny preview scale for the on-panel model
-            //float previewScale = 0.10f;
-
-
+            // Actual application loop
             SK.Run(() =>
             {
-                
+                // Checks to see if we should show the main menu or a system model
                 if (showUI)
                 {
-                    int choice = LoadInterfaces.DrawStartInterface();   
-                    
+                    // Draw the main menu and check if button pressed
+                    int choice = LoadInterfaces.DrawStartInterface();
+
+                    // If a button was pressed, set the state to show that model
                     if (choice != 0)
                     {
                         startButtonPressed = choice;
-                        showUI = false;
-                        AppState.Anchored = false;     // <- re-anchor model and UI next frame
+                        showUI = false;                 // Turn off the main menu
+                        AppState.Anchored = false;      // Re-anchor model and UI next frame
                     }
 
                 }
@@ -58,10 +58,12 @@ namespace HoloUWP
                     // Decide which model is active, and draw it
                     Model? active = null;
 
+                    // Select the model based on which button was pressed
                     switch (startButtonPressed)
                     {
                         case 1:
                             // Draw the circulatory system
+                            // Check if labels should be shown based on AppState
                             active = AppState.ShowLabels ? SystemsModels.Circulatory : SystemsModels.CirculatoryNL;
                             break;
                         case 2:
@@ -101,12 +103,13 @@ namespace HoloUWP
                             break;
                     }
 
-
+                    // If we have a valid model
                     if (active != null)
                     {
+                        // Draw the model interface and check if we should go back
                         bool goBack = LoadInterfaces.ModelInterface(active);
 
-                        
+                        // If user requested to go back, reset state to show main menu
                         if (goBack)
                         {
                             showUI = true;
@@ -115,12 +118,14 @@ namespace HoloUWP
                             System.Diagnostics.Debug.WriteLine("Going back to home screen");
                         }
 
-                        // Bounds HumanBounds = new Bounds(Vec3.Zero, new Vec3(0.6f, 1.8f, 0.6f));
-                        //Bounds HumanBounds= active.Bounds;
-                        //humanBounds.dimensions *= AppState.SystemScale * 1.05f; // a tiny padding helps selection
-                        // UI.Handle("system-handle", ref AppState.SystemPose, HumanBounds);
-                        //UI.HandleEnd();
-
+                        // Boundary checking to find the chest height and offset for the grab handle (based on human height)
+#if false
+                        Bounds HumanBounds = new Bounds(Vec3.Zero, new Vec3(0.6f, 1.8f, 0.6f));
+                        Bounds HumanBounds= active.Bounds;
+                        humanBounds.dimensions *= AppState.SystemScale * 1.05f; // a tiny padding helps selection
+                        UI.Handle("system-handle", ref AppState.SystemPose, HumanBounds);
+                        UI.HandleEnd();
+#endif
 
                         // Lookup per-system config directly by the selected button id.
                         if (startButtonPressed != 0)
@@ -173,10 +178,8 @@ namespace HoloUWP
                                   AppState.SystemPose.orientation,
                                   AppState.SystemScale);
 
+                            // Finally draw the active model
                             active.Draw(modelXform);
-
-                            // visualize the grab volume while debugging
-                            //Mesh.Cube.Draw(Material.Unlit, Matrix.TRS(AppState.SystemPose.position, AppState.SystemPose.orientation, HumanBounds.dimensions));
 
 
 
@@ -199,8 +202,8 @@ namespace HoloUWP
                             }
 #endif
 
-
-                            /* System.Diagnostics.Debug.WriteLine(
+#if false
+                            System.Diagnostics.Debug.WriteLine(
                                  $"[BOUNDS] center=({HumanBounds.center.x:0.###},{HumanBounds.center.y:0.###},{HumanBounds.center.z:0.###}) " +
                                  $"size=({HumanBounds.dimensions.x:0.###},{HumanBounds.dimensions.y:0.###},{HumanBounds.dimensions.z:0.###})");
                              System.Diagnostics.Debug.WriteLine(
@@ -208,7 +211,8 @@ namespace HoloUWP
                              System.Diagnostics.Debug.WriteLine(
                                  $"[WORLD ] feet=({feetWorld.x:0.###},{feetWorld.y:0.###},{feetWorld.z:0.###}) " +
                                  $"chest=({chestWorld.x:0.###},{chestWorld.y:0.###},{chestWorld.z:0.###}) " +
-                                 $"head=({headWorld.x:0.###},{headWorld.y:0.###},{headWorld.z:0.###})");*/
+                                 $"head=({headWorld.x:0.###},{headWorld.y:0.###},{headWorld.z:0.###})");
+#endif
                         }
 
 
