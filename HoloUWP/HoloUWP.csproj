@@ -79,7 +79,6 @@
     <Compile Include="Scene\AppState.cs" />
     <Compile Include="Scene\SystemsModels.cs" />
     <Compile Include="Scene\LoadInterface.cs" />
-    <Compile Include="Scene\DrawExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
